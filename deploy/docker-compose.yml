@@ -1,0 +1,36 @@
+version: '3'
+services:
+  stock:
+    image: webapp-flask
+    build:
+      context: ../
+      dockerfile: ./deploy/Dockerfile
+    volumes:
+      - ../code:/app
+    depends_on:
+      - stock-db
+    ports:
+      - "5001:5000"
+    environment:
+      - DATABASE_URL=postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@stock-db/${DATABASE_NAME}
+      - DATABASE_HOST=stock-db
+    networks:
+      - artificial
+  stock-db:
+    image: postgres:11
+    restart: always
+    environment:
+      POSTGRES_USER: artificial
+      POSTGRES_PASSWORD: artificial
+      POSTGRES_DB: artificial
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - artificial
+
+volumes:
+  pgdata:
+
+networks:
+  artificial:
+    external: true

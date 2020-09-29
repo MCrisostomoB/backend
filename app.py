@@ -16,14 +16,13 @@ app.config.from_object("default_config")
 app.config.from_envvar("APPLICATION_SETTINGS")
 
 from models import db
-from models import camara, cuadrado, pasillo, prediccion,products
+from models import camara, pasillo, prediccion,products
 db.init_app(app)
 migrate = Migrate(app, db)
 
 from resources.prediction import Prediction
 from resources.foto import Foto
 from resources.pasillo import Pasillo
-from resources.cuadrado import Cuadrado
 from resources.camara import Camara
 from resources.products import Product
 
@@ -38,14 +37,14 @@ def set_response_headers(response):
 configure_uploads(app, IMAGE_SET)
 api = Api(app)
 # api.add_resource(Pasillo, '/pasillo/<int:numero>')
-api.add_resource(Pasillo, '/pasillo')
+api.add_resource(Pasillo, '/pasillo','/pasillo/<apitype>/id')
 api.add_resource(Camara, '/camara')
 api.add_resource(Prediction, '/prediccion')
 api.add_resource(Foto, '/foto')
-api.add_resource(Product, '/producto','/producto/<int:id>','/producto/<name>')
+api.add_resource(Product, '/producto','/producto/<apitype>/<int:id>','/producto/<name>')
 
 
 # api.add_resource(Cuadrado, '/cuadrado')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', port =int(os.environ.get('PORT', 5000)) ,debug=True)

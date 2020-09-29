@@ -6,7 +6,7 @@ class CamaraModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(255), unique=True)
     path = db.Column(db.String(255), nullable=True)
-    pasillo_id = db.Column(db.Integer, db.ForeignKey('pasillos.id'), nullable=False)
+    pasillo_id = db.Column(db.Integer, db.ForeignKey('pasillos.id'), nullable=True)
     
 
     def __init__(self,nombre: str, pasillo_id: int, path: str):

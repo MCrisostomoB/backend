@@ -27,7 +27,7 @@ class PrediccionModel(db.Model):
         return cls.query.all()
 
     @classmethod
-    def findByIDCamara(cls, product_id):
+    def findByProductId(cls, product_id):
         return cls.query.filter_by(product_id = product_id).order_by(desc(cls.fecha)).first()
 
         

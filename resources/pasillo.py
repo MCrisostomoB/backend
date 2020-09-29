@@ -4,6 +4,7 @@ from models import db
 from models.pasillo import PasilloModel
 from models.camara import CamaraModel
 from models.prediccion import PrediccionModel
+from sqlalchemy.exc import SQLAlchemyError
 
 class Pasillo(Resource):
     parser = reqparse.RequestParser()
@@ -19,24 +20,38 @@ class Pasillo(Resource):
         help = "Este campo no puede estar vacio"
     )
 
+    parser.add_argument('camaras',
+        type =list,
+        required = False,
+        location = 'json'
+    )
+
     # add new element
     def post(self):
         data = Pasillo.parser.parse_args()
-
+        print(data,flush = True)
         # create new element
-        new_pasillo = PasilloModel(**data)
+        new_pasillo = PasilloModel(data['categoria'],data['numero'])
         
         try:
             new_pasillo.save_to_db()
-        except:
-            return {
-                'message': 'Ha ocurrido un error al ingresar a la base de datos'
-            }
-        
+            if (data['camaras'] is not None):
+                savedpasillo = PasilloModel.findByNumber(data['numero'])
+                for i in data['camaras']:
+                    camara = CamaraModel.findByID(i)
+                    if(camara is not None):
+                        camara.pasillo_id = i 
+                        camara.save_to_db()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+            return error
+            # return {
+            #     'message': 'Ha ocurrido un error al ingresar a la base de datos'
+            # }
         return new_pasillo.json(), 201 #201 created
     
     # get all
-    def get(self):
+    def get(self,apitype= None, id = None):
         allPasillos = [x.jsonWithCameras() for x in PasilloModel.find_all()]
         for pasillo in allPasillos:
             predicciones = []

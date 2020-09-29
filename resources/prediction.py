@@ -1,5 +1,7 @@
 from flask_restful import Resource, reqparse
 import json
+import ast 
+
 from models import db
 from models.prediccion import PrediccionModel
 from models.products import ProductModel
@@ -25,13 +27,15 @@ class Prediction(Resource):
         data = Prediction.parser.parse_args()
         created = []
         # find the camera
-        products = json.loads(data['data'])
-        for i in products:
-            producto = ProductModel.find_by_id(i)[0]
+        products =  ast.literal_eval(data['data'])
+        for i in products.keys():
+            producto = ProductModel.find_by_id(i)
+            print(producto.id,flush=True)
             if not producto:
                 return f"No se encontro la producto: {i}", 404
             # add the prediction
-            new_prediction = PrediccionModel(producto.id, products['i'])
+            print(products[i],flush= True)
+            new_prediction = PrediccionModel(i, products[i])
             db.session.add(new_prediction)
             db.session.flush() # make a transaction
             db.session.commit() # save the prediction and the boxes
