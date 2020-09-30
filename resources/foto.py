@@ -46,6 +46,7 @@ class Foto(Resource):
         try:
             os.remove(image_helper.get_path(folder+"/"+data['image'], folder=folder))
         except:
+            print("no lo borro", flush = True)
             pass
         try:
             image_path = image_helper.save_image(data['image'],folder=folder)
