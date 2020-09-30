@@ -44,7 +44,7 @@ class Foto(Resource):
             return {'message': f'La cámara {camara_id} no existe'}, 400 
 
         try:
-            os.remove(image_helper.get_path(folder+"/"+data['image'], folder=folder))
+            os.remove(image_helper.get_path(data['image'], folder=folder))
         except:
             print("no lo borro", flush = True)
             pass
