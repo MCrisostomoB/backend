@@ -3,6 +3,7 @@ from flask_restful import Resource, reqparse
 from models import db
 from models.camara import CamaraModel
 from models.pasillo import PasilloModel
+from models.products import ProductModel
 from sqlalchemy.exc import SQLAlchemyError
 
 class Camara(Resource):
@@ -54,7 +55,16 @@ class Camara(Resource):
         return new_camara.json(), 201 #201 created
     
     # get all
-    def get(self):
-        return {'camara': [x.json() for x in CamaraModel.find_all()]}, 200
+    def get(self,id = None):
+        if id is not None:
+            camara = CamaraModel.findByID(id)
+            productos = ProductModel.find_by_camara(id)
+            products = []
+            for i in productos:
+                products.append({'nombre_producto': i.product_name,'coordenadas':i.coordinates})
+            return {'id_camara':id,'url_foto':i.path, 'productos': products}    
+
+        else:
+            return {'camara': [x.json() for x in CamaraModel.find_all()]}, 200
 
     
