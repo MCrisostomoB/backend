@@ -25,6 +25,16 @@ class Camara(Resource):
         location='json'
     )
 
+    def put (self,id = None):
+        data = Camara.parser.parse_args()
+        if id is not None:
+            camara = CamaraModel.findByID(id)
+            camara.nombre = data['nombre']
+            camara.pasillo_id = data['pasillo_id']
+            camara.path = data['path']
+            camara.save_to_db()
+            return "camara modificada", 200
+
     # add new element
     def post(self):
         data = Camara.parser.parse_args()

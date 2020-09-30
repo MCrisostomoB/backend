@@ -1,7 +1,7 @@
 import os
 
 CORS_HEADERS = 'Content-Type'
-SQLALCHEMY_DATABASE_URI = "postgres://gcgyrdxfjfbosl:f9c289eb8b810217b4bd5de08b07d97fe1ba7573e454c59c9c96c72ab73c2207@ec2-35-169-92-231.compute-1.amazonaws.com:5432/d9bpn34vt1lgtb"
+SQLALCHEMY_DATABASE_URI = "postgres://zazyvjwaxgvnzj:84f5ca096b3fd01e832fbfb12d657b7ec2de7eb436de40cee42c534f1b96517d@ec2-54-157-234-29.compute-1.amazonaws.com:5432/d9c3224elv7c3r"
 SQLALCHEMY_TRACK_MODIFICATIONS= False
 PROPAGATE_EXCEPTIONS=True
 MAX_CONTENT_LENGTH = 16 * 1024 * 1024

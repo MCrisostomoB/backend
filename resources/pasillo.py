@@ -1,9 +1,13 @@
 from flask import request, jsonify
 from flask_restful import Resource, reqparse
 from models import db
+import json
+
 from models.pasillo import PasilloModel
+from models.products import ProductModel
 from models.camara import CamaraModel
 from models.prediccion import PrediccionModel
+
 from sqlalchemy.exc import SQLAlchemyError
 
 class Pasillo(Resource):
@@ -25,6 +29,19 @@ class Pasillo(Resource):
         required = False,
         location = 'json'
     )
+    def put(self,id=None):
+        data = Pasillo.parser.parse_args()
+        if id is not None:
+            pasillo = PasilloModel.findByID(id)
+            pasillo.numero = data['numero']
+            pasillo.categoria = data['categoria']
+            for i in data['camaras']:
+                camara = CamaraModel.findByID(i)
+                if(camara is not None):
+                    camara.pasillo_id = i 
+                    camara.save_to_db()
+            pasillo.save_to_db()
+            return "pasillo modificado", 200
 
     # add new element
     def post(self):
@@ -52,15 +69,69 @@ class Pasillo(Resource):
     
     # get all
     def get(self,apitype= None, id = None):
-        allPasillos = [x.jsonWithCameras() for x in PasilloModel.find_all()]
-        for pasillo in allPasillos:
-            predicciones = []
-            for camara in pasillo['camaras']:
-                # camara.predicciones TODO: sort this list to replace the line below
-                ultimaPrediccion = PrediccionModel.findByIDCamara(camara.id) # sacar ultima prediccion por camara
-                if ultimaPrediccion: # in case the camera dont have predictions
-                    predicciones.append(ultimaPrediccion.json())
-            pasillo["predicciones"] = predicciones
-            del pasillo['camaras']
+        if apitype is not None:
+            if apitype == "admin":
+                if id is not None:
+                    dic = dict()
+                    dic["id_pasillo"] = id
+                    pasillo = PasilloModel.findByID(id)
+                    dic['numero'] = pasillo.numero
+                    dic['categoria'] = pasillo.categoria
+                    dic['camaras'] = []
+                    camaras = CamaraModel.findByIDPasillo(id)
+                    for i in camaras:
+                        productos = ProductModel.find_by_camara(i.id)
+                        dic['camaras'].append({'id_camara':i.id,'url_foto':i.path})
+                        products = []
+                        for j in productos:
+                            products.append({'nombre_producto':j.product_name , 'coordenadas': j.coordinates})
+                        
+                        dic['camaras'][-1].update({'productos': products})
+                    return dic ,200
+                else:
+                    allPasillos = []
+                    for x in PasilloModel.find_all():
+                        if x.numero != -1:
+                            allPasillos.append(x.jsonWithCameras())
+                    for pasillo in allPasillos:
+                        pasillo.update({'total_camaras':len(pasillo['camaras'])})
+                        del pasillo['camaras']
+                    return {'pasillos': allPasillos}, 200
+        elif id is not None:
+            dic = dict()
+            dic['camaras'] = []
+            dic["id_pasillo"] = id
+            pasillo = PasilloModel.findByID(id)
+            dic['numero'] = pasillo.numero
+            camaras = CamaraModel.findByIDPasillo(id)
+            for i in camaras:
+                productos = ProductModel.find_by_camara(i.id)
+                dic['camaras'].append({'id_camara':i.id,'url_foto':i.path})
+                products = []
+                for j in productos:
+                    prediccion = PrediccionModel.findByProductId(j.id)
+                    if prediccion.area is not None:
+                        products.append({'nombre_producto':j.product_name , 'porcentaje_vacio':prediccion.area})
+                    else:
+                        products.append({'nombre_producto':j.product_name , 'porcentaje_vacio':0})
 
-        return {'pasillos': allPasillos}, 200
+                
+                dic['camaras'][-1].update({'productos': products})
+            return dic ,200
+        else:
+            retorno = []
+            allPasillos =PasilloModel.find_all()
+            for i in allPasillos:
+                total = 0
+                totalproductos = 0
+                productos =  ProductModel.find_by_pasillo(i.id)
+                for j in productos:
+                    prediccion= PrediccionModel.findByProductId(j.id)
+                    total += prediccion.area
+                    totalproductos +=1
+                # i['total_espacio_vacio'] = total
+                retorno.append(i.json())
+                if totalproductos != 0:
+                    total = total/totalproductos
+                retorno[-1]['total_espacio_vacio'] = total
+            return retorno , 200

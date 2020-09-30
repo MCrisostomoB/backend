@@ -30,17 +30,17 @@ class Prediction(Resource):
         products =  ast.literal_eval(data['data'])
         for i in products.keys():
             producto = ProductModel.find_by_id(i)
-            print(producto.id,flush=True)
+            # print(producto.id,flush=True)
             if not producto:
                 return f"No se encontro la producto: {i}", 404
             # add the prediction
-            print(products[i],flush= True)
+            # print(products[i],flush= True)
             new_prediction = PrediccionModel(i, products[i])
             db.session.add(new_prediction)
             db.session.flush() # make a transaction
             db.session.commit() # save the prediction and the boxes
             created.append(new_prediction)
-        return created, 201
+        return f"Se Insertaron las predicciones con exito", 201
 
     def get(self):
         return {'predicciones':[prediccion.json() for prediccion in PrediccionModel.find_all()]}, 200

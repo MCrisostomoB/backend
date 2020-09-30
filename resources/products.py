@@ -34,6 +34,17 @@ class Product(Resource):
         location='json'
     )
 
+    def put(self,id= None):
+        data = Product.parser.parse_args()
+        if id is not None:
+            producto = ProductModel.find_by_id(id)
+            producto.product_name = data['product_name']
+            producto.pasillo_id = data['pasillo_id']
+            producto.camara_id = data['camara_id']
+            producto.coordinates = data['coordinates']
+            producto.save_to_db()
+            return "producto modificado", 200
+
     # add new element
     def post(self):
         data = Product.parser.parse_args()

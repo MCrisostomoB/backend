@@ -1,0 +1,4 @@
+COMPOSE_FILE=./deploy/docker-compose.yml
+DATABASE_USERNAME=artificial
+DATABASE_PASSWORD=artificial
+DATABASE_NAME=artificial

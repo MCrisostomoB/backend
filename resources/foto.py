@@ -43,15 +43,13 @@ class Foto(Resource):
         if camara is None:
             return {'message': f'La cámara {camara_id} no existe'}, 400 
 
-        # try:
-        #     os.remove(image_helper.get_path(camara.path, folder=folder))
-        # except:
-        #     pass
+        try:
+            os.remove(image_helper.get_path(folder+"/"+data['image'], folder=folder))
+        except:
+            pass
         try:
             image_path = image_helper.save_image(data['image'],folder=folder)
-            basename = image_helper.get_basename(image_path)
-            camara.path = basename
-            camara.save_to_db()
+            basename = image_helper.get_basename(image_path) 
             return {'message': f'El archivo \'{basename}\' ha sido subido correctamente'}, 201 
         
         except UploadNotAllowed:
