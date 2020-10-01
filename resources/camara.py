@@ -62,7 +62,7 @@ class Camara(Resource):
             products = []
             for i in productos:
                 products.append({'id':i.id,'nombre_producto': i.product_name,'coordenadas':i.coordinates})
-            return {'id_camara':id,'url_foto':camara.path, 'productos': products}    
+            return {'id_camara':id,'url':camara.path, 'productos': products}    
 
         else:
             return {'camara': [x.json() for x in CamaraModel.find_all()]}, 200

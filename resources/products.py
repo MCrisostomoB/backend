@@ -53,7 +53,7 @@ class Product(Resource):
         data = Product.parser.parse_args()
         for i in data['eliminar']:
             producto = ProductModel.find_by_id(id)
-            producto.cooridnates = ""
+            producto.coordinates = ""
             producto.save_to_db()
         for i in data['actualizar']:
             product =  ast.literal_eval(i)
