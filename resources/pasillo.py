@@ -137,4 +137,4 @@ class Pasillo(Resource):
                     if totalproductos != 0:
                         total = total/totalproductos
                     retorno[-1]['total_espacio_vacio'] = total
-            return retorno , 200
+            return sorted(retorno,key=lambda x:x['total_espacio_vacio'],reverse = True) , 200
