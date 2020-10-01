@@ -33,17 +33,41 @@ class Product(Resource):
         required=False,
         location='json'
     )
+    parser.add_argument('crear',
+        type = list,
+        required = False,
+        location = 'json'
+    )
+    parser.add_argument('actualizar',
+        type = list,
+        required = False,
+        location = 'json'
+    )
+    parser.add_argument('eliminar',
+        type = list,
+        required = False,
+        location = 'json'
+    )
 
-    def put(self,id= None):
+    def put(self,):
         data = Product.parser.parse_args()
-        if id is not None:
+        for i in data['eliminar']:
             producto = ProductModel.find_by_id(id)
-            producto.product_name = data['product_name']
+            producto.cooridnates = ""
+            producto.save_to_db()
+        for i in data['actualizar']:
+            product =  ast.literal_eval(i)
+            producto = ProductModel.find_by_id(data['id'])
+            producto.product_name = producto['product_name']
             producto.pasillo_id = data['pasillo_id']
             producto.camara_id = data['camara_id']
-            producto.coordinates = data['coordinates']
+            producto.coordinates = producto['coordinates']
             producto.save_to_db()
-            return "producto modificado", 200
+        for i in data['crear']:
+            product = ast.literal_eval(i)
+            new_product = ProductModel(**product)
+            new_product.save_to_db()
+        return "productos modificado", 200
 
     # add new element
     def post(self):
