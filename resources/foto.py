@@ -44,17 +44,17 @@ class Foto(Resource):
         if camara is None:
             return {'message': f'La cámara {camara_id} no existe'}, 400 
         
-        print(image_helper.get_path(data['image'], folder=folder),flush=True)
+        # print(image_helper.get_path(data['image'], folder=folder),flush=True)
         try:
-            os.remove(image_helper.get_path(data['image'], folder=folder))
-            
+            os.remove(folder+"/foto.jpg")
+            print("removida")
         except:
             print("no lo borro", flush = True)
             pass
         try:
-            image_path = image_helper.save_image(data['image'],folder=folder)
-            basename = image_helper.get_basename(image_path) 
-            return {'message': f'El archivo \'{basename}\' ha sido subido correctamente'}, 201 
+            image_path = data['image'].save(folder+"/foto.jpg")
+            # basename = image_helper.get_basename(image_path) 
+            return {'message': f'El archivo foto.jpg ha sido subido correctamente'}, 201 
         
         except UploadNotAllowed:
             extension = image_helper.get_extension(data['image'])
