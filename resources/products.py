@@ -49,7 +49,7 @@ class Product(Resource):
         location = 'json'
     )
 
-    def put(self,):
+    def put(self):
         data = Product.parser.parse_args()
         for i in data['eliminar']:
             producto = ProductModel.find_by_id(id)
