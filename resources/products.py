@@ -124,7 +124,6 @@ class Product(Resource):
             for x in ProductModel.find_all():
                 if x.numero != -1:
                     lista.append(x.json())
-
             return {'productos': lista}, 200
 
     def delete(self,id):
