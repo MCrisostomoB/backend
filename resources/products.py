@@ -100,14 +100,15 @@ class Product(Resource):
                     dic = dict()
                     dic['products'] = []
                     for x in ProductModel.find_by_pasillo(id):
-                        dic['products'].append(x.json())
-                        area = PrediccionModel.findByProductId(x.id)
-                        if area is not None:
-                            a = {"porcentaje_vacio": area.area}
-                            dic['products'][-1].update(a)
-                        else:
-                            a = {"porcentaje_vacio": 0}
-                            dic['products'][-1].update(a)
+                        if(x.coordinates != ""):
+                            dic['products'].append(x.json())
+                            area = PrediccionModel.findByProductId(x.id)
+                            if area is not None:
+                                a = {"porcentaje_vacio": area.area}
+                                dic['products'][-1].update(a)
+                            else:
+                                a = {"porcentaje_vacio": 0}
+                                dic['products'][-1].update(a)
                     return dic,200
             elif apitype == "camara":
                 if id is not None:
