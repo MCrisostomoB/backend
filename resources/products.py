@@ -52,7 +52,7 @@ class Product(Resource):
     def put(self):
         data = Product.parser.parse_args()
         for i in data['eliminar']:
-            producto = ProductModel.find_by_id(id)
+            producto = ProductModel.find_by_id(i)
             producto.coordinates = ""
             producto.save_to_db()
         for i in data['actualizar']:
