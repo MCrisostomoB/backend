@@ -58,14 +58,14 @@ class Product(Resource):
         for i in data['actualizar']:
             product =  ast.literal_eval(i)
             producto = ProductModel.find_by_id(data['id'])
-            producto.product_name = producto['product_name']
+            producto.product_name = producto['nombre_producto']
             producto.pasillo_id = data['pasillo_id']
             producto.camara_id = data['camara_id']
-            producto.coordinates = producto['coordinates']
+            producto.coordinates = producto['coordenadas']
             producto.save_to_db()
         for i in data['crear']:
             product = ast.literal_eval(i)
-            new_product = ProductModel(**product)
+            new_product = ProductModel(product['nombre_producto'],data['pasillo_id'],product['coordenadas'],data['camara_id'])
             new_product.save_to_db()
         return "productos modificado", 200
 
