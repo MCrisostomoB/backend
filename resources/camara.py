@@ -63,15 +63,18 @@ class Camara(Resource):
             for i in productos:
                 if i.coordinates != "":
                     products.append({'id':i.id,'nombre_producto': i.product_name,'coordenadas':i.coordinates})
-            return {'id_camara':id,'nombre':camara.nombre,'url':camara.path, 'productos': products}    
+            return {'id_camara':id,'nombre':camara.nombre,'url':camara.path,"pasillo_id":camara.pasillo_id,'productos': products}    
 
         else:
             lista = []
             for x in CamaraModel.find_all():
                 pasillo = PasilloModel.findByID(x.pasillo_id)
                 lista.append(x.json())
-                if(pasillo is not None and pasillo.numero == -1):
-                    lista[-1].update({'libre': True})
+                if pasillo is not None:
+                    if(pasillo is not None and pasillo.numero == -1):
+                        lista[-1].update({'libre': True})
+                    else:
+                        lista[-1].update({'libre': False})
                 else:
                     lista[-1].update({'libre': False})
 
