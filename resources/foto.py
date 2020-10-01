@@ -79,7 +79,7 @@ class Foto(Resource):
                 folder = f'camaras_{camara_id}'
             elif apitype == "rectangulo":   
                 folder = f'productos/camaras_{camara_id}'
-           
+            print(folder,flush= True)
             try:
                 return send_file(folder+"/foto.jpg")
             except FileNotFoundError:
