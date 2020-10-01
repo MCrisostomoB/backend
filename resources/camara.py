@@ -63,7 +63,7 @@ class Camara(Resource):
             for i in productos:
                 if i.coordinates != "":
                     products.append({'id':i.id,'nombre_producto': i.product_name,'coordenadas':i.coordinates})
-            return {'id_camara':id,'url':camara.path, 'productos': products}    
+            return {'id_camara':id,'nombre':camara.nombre,'url':camara.path, 'productos': products}    
 
         else:
             lista = []
