@@ -120,12 +120,7 @@ class Product(Resource):
         if name is not None:
             return {'producto': [x.json() for x in ProductModel.find_by_name(name)]},200
         else:
-            lista = []
-            for x in ProductModel.find_all():
-                print(x.numero,flush = True)
-                if x.numero != -1:
-                    lista.append(x.json())
-            return {'productos': lista}, 200
+            return {'productos': [x.json() for x in ProductModel.find_all()]}, 200
 
     def delete(self,id):
         product = ProductModel.find_by_id(id)[0]

@@ -123,17 +123,18 @@ class Pasillo(Resource):
             retorno = []
             allPasillos =PasilloModel.find_all()
             for i in allPasillos:
-                total = 0
-                totalproductos = 0
-                productos =  ProductModel.find_by_pasillo(i.id)
-                for j in productos:
-                    prediccion= PrediccionModel.findByProductId(j.id)
-                    if prediccion is not None:
-                        total += prediccion.area
-                    totalproductos +=1
-                # i['total_espacio_vacio'] = total
-                retorno.append(i.json())
-                if totalproductos != 0:
-                    total = total/totalproductos
-                retorno[-1]['total_espacio_vacio'] = total
+                if i.numero != -1:
+                    total = 0
+                    totalproductos = 0
+                    productos =  ProductModel.find_by_pasillo(i.id)
+                    for j in productos:
+                        prediccion= PrediccionModel.findByProductId(j.id)
+                        if prediccion is not None:
+                            total += prediccion.area
+                        totalproductos +=1
+                    # i['total_espacio_vacio'] = total
+                    retorno.append(i.json())
+                    if totalproductos != 0:
+                        total = total/totalproductos
+                    retorno[-1]['total_espacio_vacio'] = total
             return retorno , 200
