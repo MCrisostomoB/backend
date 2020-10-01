@@ -128,7 +128,8 @@ class Pasillo(Resource):
                 productos =  ProductModel.find_by_pasillo(i.id)
                 for j in productos:
                     prediccion= PrediccionModel.findByProductId(j.id)
-                    total += prediccion.area
+                    if predicciion is not None:
+                        total += prediccion.area
                     totalproductos +=1
                 # i['total_espacio_vacio'] = total
                 retorno.append(i.json())
