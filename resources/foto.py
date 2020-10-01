@@ -48,6 +48,8 @@ class Foto(Resource):
                 # print(image_helper.get_path(data['image'], folder=folder),flush=True)
             elif apitype == "rectangulos":
                 folder = f'productos/camaras_{camara_id}'
+                if(not os.path.exists("productos")):
+                    os.mkidr("productos")
                 if(not os.path.exists(folder)):
                     os.mkdir(folder)
                 camara = CamaraModel.findByID(camara_id)
