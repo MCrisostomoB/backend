@@ -37,7 +37,7 @@ class Foto(Resource):
         data = Foto.parser.parse_args()
         camara_id = data['camara_id']
         folder = f'camaras_{camara_id}'
-        if(not path.exists(folder)):
+        if(not os.path.exists(folder)):
             os.mkdir(folder)
         camara = CamaraModel.findByID(camara_id)
         print(folder,flush= True)
