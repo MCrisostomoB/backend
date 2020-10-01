@@ -77,7 +77,7 @@ class Foto(Resource):
             folder = ""
             if apitype == "prediccion":
                 folder = f'camaras_{camara_id}'
-            elif apitype == "rectangulo":   
+            elif apitype == "rectangulos":   
                 folder = f'productos/camaras_{camara_id}'
             print(folder,flush= True)
             try:
