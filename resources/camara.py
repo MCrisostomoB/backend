@@ -69,7 +69,7 @@ class Camara(Resource):
             lista = []
             for x in CamaraModel.find_all():
                 lista.append(x.json())
-                if lista[-1]['pasillo_id'] == null:
+                if lista[-1]['pasillo_id'] is None:
                     lista[-1].update({'libre': True})
                 else:
                     lista[-1].update({'libre': False})
