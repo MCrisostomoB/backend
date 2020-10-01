@@ -84,7 +84,7 @@ class Pasillo(Resource):
                         dic['camaras'].append({'id_camara':i.id,'url_foto':i.path})
                         products = []
                         for j in productos:
-                            products.append({'nombre_producto':j.product_name , 'coordenadas': j.coordinates})
+                            products.append({'id':j.id,'nombre_producto':j.product_name , 'coordenadas': j.coordinates})
                         
                         dic['camaras'][-1].update({'productos': products})
                     return dic ,200
