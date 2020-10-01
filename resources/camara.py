@@ -69,9 +69,11 @@ class Camara(Resource):
             lista = []
             for x in CamaraModel.find_all():
                 pasillo = PasilloModel.findByID(x.pasillo_id)
+                lista.append(x.json())
                 if(pasillo.numero == -1):
-                    lista.append(x.json())
                     lista[-1].update({'libre': True})
+                else:
+                    lista[-1].update({'libre': False})
 
             return {'camara': lista }, 200
 
