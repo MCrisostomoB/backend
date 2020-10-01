@@ -34,7 +34,7 @@ class ProductModel(db.Model):
     
     @classmethod
     def find_by_id(cls, id: int):
-        return cls.query.filter_by(id=id)
+        return cls.query.filter_by(id=id).first()
         
     @classmethod
     def find_by_name(cls, product_name: str):
