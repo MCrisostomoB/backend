@@ -41,7 +41,7 @@ api.add_resource(Pasillo, '/pasillo','/pasillo/<apitype>/<int:id>', '/pasillo/<i
 api.add_resource(Camara, '/camara',"/camara/<int:id>")
 api.add_resource(Prediction, '/prediccion')
 api.add_resource(Foto, '/foto')
-api.add_resource(Product, '/producto','/producto/<apitype>/<int:id>','/producto/<name>','producto/<int:id>')
+api.add_resource(Product, '/producto','/producto/<apitype>/<int:id>','/producto/<name>','/producto/<int:id>')
 
 
 # api.add_resource(Cuadrado, '/cuadrado')
