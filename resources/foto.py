@@ -37,7 +37,7 @@ class Foto(Resource):
         if apitype is not None:
             data = Foto.parser.parse_args()
             camara_id = data['camara_id']
-            if apitype == "prediccion"
+            if apitype == "prediccion":
                 folder = f'camaras_{camara_id}'
                 if(not os.path.exists(folder)):
                     os.mkdir(folder)
