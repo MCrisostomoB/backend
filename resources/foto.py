@@ -74,10 +74,12 @@ class Foto(Resource):
         if apitype is not None:
             data = Foto.parser_get.parse_args()
             camara_id = data['camara_id']
+            folder = ""
             if apitype == "prediccion":
                 folder = f'camaras_{camara_id}'
             elif apitype == "rectangulo":   
                 folder = f'productos/camaras_{camara_id}'
+           
             try:
                 return send_file(folder+"/foto.jpg")
             except FileNotFoundError:
