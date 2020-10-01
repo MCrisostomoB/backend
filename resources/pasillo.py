@@ -38,7 +38,7 @@ class Pasillo(Resource):
             for i in data['camaras']:
                 camara = CamaraModel.findByID(i)
                 if(camara is not None):
-                    camara.pasillo_id = i 
+                    camara.pasillo_id = id 
                     camara.save_to_db()
             pasillo.save_to_db()
             return "pasillo modificado", 200
