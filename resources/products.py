@@ -59,7 +59,7 @@ class Product(Resource):
             producto.save_to_db()
         for i in data['actualizar']:
             product =  i
-            producto = ProductModel.find_by_id(data['id'])
+            producto = ProductModel.find_by_id(product['id'])
             producto.product_name = product['nombre_producto']
             producto.pasillo_id = data['pasillo_id']
             producto.camara_id = data['camara_id']
