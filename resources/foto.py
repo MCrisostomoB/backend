@@ -69,6 +69,6 @@ class Foto(Resource):
         camara = CamaraModel.findByID(camara_id)
 
         try:
-            return send_file(image_helper.get_path(folder+"/foto.jpg", folder= folder))
+            return send_file(folder+"/foto.jpg")
         except FileNotFoundError:
             return {'message': 'La imagen no fue encontrada'}
