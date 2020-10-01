@@ -1,5 +1,7 @@
 from flask import request, jsonify
 import json
+import ast 
+
 from flask_restful import Resource, reqparse
 from models import db
 from models.prediccion import PrediccionModel
