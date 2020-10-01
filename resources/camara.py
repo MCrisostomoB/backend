@@ -61,7 +61,8 @@ class Camara(Resource):
             productos = ProductModel.find_by_camara(id)
             products = []
             for i in productos:
-                products.append({'id':i.id,'nombre_producto': i.product_name,'coordenadas':i.coordinates})
+                if i.coordinates != "":
+                    products.append({'id':i.id,'nombre_producto': i.product_name,'coordenadas':i.coordinates})
             return {'id_camara':id,'url':camara.path, 'productos': products}    
 
         else:
