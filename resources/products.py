@@ -111,7 +111,11 @@ class Product(Resource):
                     return dic,200
             elif apitype == "camara":
                 if id is not None:
-                    return {'producto': [x.json() for x in ProductModel.find_by_camara(id)]},200
+                    lista = []
+                    for x in ProductModel.find_by_camara(id):
+                        if x.coordinates != "":
+                            lista.append(x.json())
+                    return {'producto': lista},200
         if name is not None:
             return {'producto': [x.json() for x in ProductModel.find_by_name(name)]},200
         else:
