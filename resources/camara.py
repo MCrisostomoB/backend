@@ -66,6 +66,13 @@ class Camara(Resource):
             return {'id_camara':id,'url':camara.path, 'productos': products}    
 
         else:
-            return {'camara': [x.json() for x in CamaraModel.find_all()]}, 200
+            lista = []
+            for x in CamaraModel.find_all():
+                pasillo = PasilloModel.findByID(x.pasillo_id)
+                if(pasillo.numero == -1):
+                    lista.append(x.json())
+                    lista[-1].update({'libre': True})
+
+            return {'camara': lista }, 200
 
     
