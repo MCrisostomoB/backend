@@ -39,12 +39,12 @@ class Foto(Resource):
         folder = f'camaras_{camara_id}'
 
         camara = CamaraModel.findByID(camara_id)
-
+        print(folder,flush= True)
+        print(data['image'])
         if camara is None:
             return {'message': f'La cámara {camara_id} no existe'}, 400 
 
         try:
-            print(image_helper.get_path(data['image'],folder=folder),flush = True)
             os.remove(image_helper.get_path(data['image'], folder=folder))
             
         except:
