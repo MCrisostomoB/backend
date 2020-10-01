@@ -122,6 +122,7 @@ class Product(Resource):
         else:
             lista = []
             for x in ProductModel.find_all():
+                print(x.numero)
                 if x.numero != -1:
                     lista.append(x.json())
             return {'productos': lista}, 200
